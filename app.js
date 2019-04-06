@@ -12,10 +12,11 @@ const io = socketio.listen(server);
 const nsp = io.of('/namespace');
 
 nsp.on('connection', (socket) => {
-    console.log('Bağlantı başarılı...');
+    socket.join('anaOda') // Ana Oda Diye bir oda varsa ona katılınacak; yoksa böyle bir oda oluşturulacak ve katılınacak.
+    console.log('anaOda ya katılındı...')
 
     socket.on('deneme', () => {
-        socket.emit('deneme', {veri : 'deneme'})
+        socket.to('anaOda').emit('deneme', {veri : 'deneme'})
     })
 
     socket.on('disconnect', () => {
