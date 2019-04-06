@@ -1,0 +1,39 @@
+    <!DOCTYPE html>
+<html>
+<head>
+<title>Socket IO Deneme</title>
+
+<!-- JQUERY CDN -->
+<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+<h1>This is a Heading</h1>
+<p>This is a paragraph.</p>
+
+<button id="butonAl">Veriyi Server'a Gönder</button>
+
+<script>
+
+    const socket = io.connect('http://localhost:3000/namespace')
+
+    $('#butonAl').on('click', () => {
+        socket.emit('deneme');
+    })
+
+    socket.on('deneme', (data) => {
+        console.log(data);
+    })
+
+    
+
+
+</script>
+
+</body>
+</html>
