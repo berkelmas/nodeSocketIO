@@ -12,14 +12,27 @@ const io = socketio.listen(server);
 const nsp = io.of('/namespace');
 
 nsp.on('connection', (socket) => {
-    socket.join('anaOda') // Ana Oda Diye bir oda varsa ona katılınacak; yoksa böyle bir oda oluşturulacak ve katılınacak.
-    console.log('anaOda ya katılındı...')
 
-    socket.on('deneme', () => {
-        socket.to('anaOda').emit('deneme', {veri : 'deneme'})
+    socket.on('joinRoom', (data) => {
+        socket.join(data.room);
+        socket.emit('joinRoomMessage', {room : data.room});
+        console.log('Bağlantı Kuruldu. Oda Adı: ' + data.room);
+        console.log(nsp.sockets.adapter.rooms[data.room].length)
+    })
+
+    socket.on('notifyRoom', (data) => {
+        //socket.to(data.room).emit('kisiSayisi', {personNumber : nsp.sockets.adapter.rooms[data.room].length })
+        console.log('dsadas')
+    })
+
+    socket.on('kisiSayisi', (data) => {
+        //const peopleNumber = io.sockets.adapter.rooms[data.roomName];
+        socket.emit('personNumber', {personNumber : peopleNumber})
     })
 
     socket.on('disconnect', () => {
         console.log('Bağlantı Koptu...')
     })
 })
+
+// Deneme Branch

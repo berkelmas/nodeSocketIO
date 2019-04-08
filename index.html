@@ -16,22 +16,44 @@
 <h1>This is a Heading</h1>
 <p>This is a paragraph.</p>
 
-<button id="butonAl">Veriyi Server'a Gönder</button>
+
+<input placeholder="Oda Adını girin" id="roomName" />
+<input style="display : none" placeholder="Mesajınızı Girin" id="message"/>
+ 
+<button id="butonAl">Odaya Katıl</button>
+<button style="display : none" id="messageSend">Mesaj Gönder</button>
+
+<div id="odaAdi"></div>
+<div id="kisiNumber">Odadaki Kişi Sayısı: </div>
 
 <script>
 
     const socket = io.connect('http://localhost:3000/namespace')
 
     $('#butonAl').on('click', () => {
-        socket.emit('deneme');
+        socket.emit('joinRoom', {room : $('#roomName').val() });
+
+        socket.emit('notifyRoom', {room : $('#roomName').val() });
+
+        $('#roomName').css('display', 'none');
+        $('#butonAl').css('display', 'none');
+
+        $('#message').css('display', 'inline')
+        $('#messageSend').css('display', 'inline')
     })
 
-    socket.on('deneme', (data) => {
-        console.log(data);
+    socket.on('joinRoomMessage', (data) => {
+        $('#odaAdi').append(data.room)
     })
 
+    socket.on('kisiSayisi', (data) => {
+        console.log(data)
+    })
+
+    socket.on('personNumber', (data) => {
+        console.log(data.personNumber);
+    })
     
-
 
 </script>
 
